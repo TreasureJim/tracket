@@ -15,6 +15,11 @@ async def remove_device(device: BleakClient):
 
     devices.pop(device.address)
 
+async def cleanup():
+    for device in devices:
+        print(f"Disconnecting {device.address}")
+        await device.disconnect()
+
 async def scan():
     discovered = await BleakScanner.discover(
         # return_adv=True,
@@ -69,3 +74,5 @@ if __name__ == "__main__":
             pass
 
     print(devices)
+
+    asyncio.run(cleanup())
